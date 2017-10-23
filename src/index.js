@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom';
 import './index.css';
@@ -7,6 +7,8 @@ import SlideDemo from './view/home';
 // import registerServiceWorker from './registerServiceWorker'
 // import { DatePicker } from 'antd'
 // import FirstComponent from './components/firstComponent'
+
+// let 块作用域
 console.info(React)
 var a = [];
 for (var i = 0; i < 10; i++ ){
@@ -42,82 +44,28 @@ var str = 'return' + '`Hello ${name}`';
 var func = new Function('name', str);
 func('Amy')
 
-
-
-
-
-
-
-class About extends React.Component {
+class Welcome extends Component {
 	render() {
-		console.info('11111111111111111')
-		return {
-
-		}
+		return <h1>Hello, {this.props.name}</h1>;
 	}
 }
-console.info('zheshinali===999999====')
-class Inbox extends React.Component {
+
+class Atest extends Component {
 	render() {
-		return {
-
-		}
-	}
-}
-class Home extends React.Component {
-	render() {
-		return {
-
-		}
-	}
-}
-console.info('zheshinali')
-class Test extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = { route: window.location.hash.substr(1) }
-	}
-	
-	componentDidMount() {
-		window.addEventListener('huashchange', () => {
-	        this.setState((preState, props) => {
-				route: window.location.hash.substr(1)
-			})
-		})
-    }
-    
-    render() {
-		let Child
-		switch (this.state.route) {
-			case '/about':
-				Child = About
-				break
-			case '/inbox':
-				Child = Inbox
-				break
-			default:
-				Child = Home
-		}
-
 		return (
 			<div>
-				<h1>App</h1>
-				<ul>
-					<li><a href="#/about">Inbox</a></li>
-					<li><a href="#/inbox">Inbox</a></li>
-				</ul>
-				<Child />
+				<Welcome name="sarah" />
+				<Welcome name="john" />
+				<Welcome name="sonia" />
 			</div>
-		)
+		);
 	}
 }
-export default { About, Inbox, Home, Test}
 
-// ReactDOM.render(<App />, document.getElementById('root'))
-ReactDOM.render(<SlideDemo />, document.getElementById('root'));
-
-// ReactDOM.render(<DatePicker />, document.getElementById('antd_1'))
-// ReactDOM.render(<FirstComponent />, document.getElementById('component_placeholder'))
-// ReactDOM.render(<Test />, document.getElementById('root'))
+// ReactDOM.render(<App />, document.getElementById('root'));
+// ReactDOM.render(<SlideDemo />, document.getElementById('root'));
+ReactDOM.render(<Atest />, document.getElementById('root'));
+// ReactDOM.render(<DatePicker />, document.getElementById('antd_1'));
+// ReactDOM.render(<FirstComponent />, document.getElementById('component_placeholder'));
 // registerServiceWorker()
 
