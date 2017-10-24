@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { render } from 'react-dom';
+// import { render } from 'react-dom';
 import './index.css';
-import App from './App';
-import SlideDemo from './view/home';
+// import App from './App';
+// import SlideDemo from './view/home';
 // import registerServiceWorker from './registerServiceWorker'
 // import { DatePicker } from 'antd'
 // import FirstComponent from './components/firstComponent'
@@ -62,9 +62,188 @@ class Atest extends Component {
 	}
 }
 
+function tick() {
+	const element = (
+		<div>
+			<h1>Hello, world!</h1>
+			<h2>It is test {new Date().toLocaleTimeString()}.</h2>
+		</div>
+	);
+	ReactDOM.render(
+		element,
+		document.getElementById('root')
+	);
+}
+
+// setInterval(tick, 1000);
+
+// 封装时钟
+function Clock(props) {
+	return (
+		<div>
+			<h1>Hello, world!</h1>
+			<h2>It is test1 {props.date.toLocaleTimeString()}.</h2>
+		</div>
+	);
+}
+
+// 使用 clock 组件
+function tick1() {
+	ReactDOM.render(
+		<Clock date={new Date()} />,
+		document.getElementById('root')
+	);
+}
+
+// setInterval(tick1, 1000);
+
+// 在类中才能使用 生命钩子 和 局部状态
+// 1、将 clock 改成 类 声明形式 
+class ClockClass extends React.Component {
+	/**
+	 * 添加 一个 类构造函数 来初始化状态 this.state
+	 */
+	constructor(props) {
+		super(props);
+		this.state = {date: new Date()};
+		console.log('constructor');
+	}
+
+	/**
+	 * 在组件类上声明特殊的方法，当组件挂载或卸载时，来运行一些代码：
+	 * 这些方法被称为 生命周期钩子
+	 */
+	componentDidMount() {
+		this.timerID = setInterval(
+			() => this.tick2(),
+			1000
+		);
+		console.log('didmount');
+	}
+	componentWillUnmount() {
+		clearInterval(this.timerID);
+		console.log('willunmount');
+	}
+
+	tick2() {
+		console.log('tick')
+		this.setState({
+			date: new Date()
+		});
+	}
+
+	render() {
+		console.log('render');
+		return (
+			<div>
+				<h1>Hello, world!</h1>
+				{/*<h2>It is test1 {this.props.date.toLocaleTimeString()}.</h2>*/}
+
+				{/**
+				 * 将 props 改成 state
+				 */}
+				<h2>It is testState {this.state.date.toLocaleTimeString()}.</h2>
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(
+	<ClockClass />,
+	document.getElementById('root')
+);
+
+// 条件渲染
+function UserGreeting(props) {
+	return <h1>Welcome back!</h1>;
+}
+
+function GuestGreeting(props) {
+	return <h1>Please sign up!</h1>;
+}
+
+function Greeting(props) {
+	const isLogedIn = props.isLogedIn;
+	if (isLogedIn) {
+		return <UserGreeting />;
+	} else {
+		return <GuestGreeting />;
+	}
+}
+
+ReactDOM.render(
+	<Greeting isLogedIn={true} />,
+	document.getElementById('root')
+);
+
+// 元素变量
+// 先定义两种状态的两个 button
+function LoginButton(props) {
+	return (
+		<button onClick={props.onClick}>
+			Login
+		</button>
+	);
+}
+
+function LogoutButton(props) {
+	return (
+		<button onClick={props.onClick}>
+			Logout
+		</button>
+	);
+}
+
+class LoginControl extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleLoginClick = this.handleLoginClick.bind(this);
+		this.handleLogOutClick = this.handleLogOutClick.bind(this);
+		this.state = {isLogedIn: false};
+	}
+
+	handleLoginClick() {
+		this.setState({
+			isLogedIn: true
+		});
+	}
+
+	handleLogOutClick() {
+		this.setState({
+			isLogedIn: false
+		});
+	}
+
+	render() {
+		const isLogedIn = this.state.isLogedIn;
+
+		let button = null;
+		if (isLogedIn) {
+			button = <LogoutButton onClick={this.handleLogOutClick} />
+		} else {
+			button = <LoginButton onClick={this.handleLoginClick} />
+		}
+
+		return (
+			<div>
+				<Greeting isLogedIn={isLogedIn} />
+				{/**
+				 * 将组件元素作为 变量 使用，此时外层加 {}。上面定义时可以直接赋值。
+				 */}
+				{button} 
+			</div>
+		)
+	}
+}
+
+ReactDOM.render(
+	<LoginControl />,
+	document.getElementById('root')
+);
+
 // ReactDOM.render(<App />, document.getElementById('root'));
 // ReactDOM.render(<SlideDemo />, document.getElementById('root'));
-ReactDOM.render(<Atest />, document.getElementById('root'));
+// ReactDOM.render(<Atest />, document.getElementById('root'));
 // ReactDOM.render(<DatePicker />, document.getElementById('antd_1'));
 // ReactDOM.render(<FirstComponent />, document.getElementById('component_placeholder'));
 // registerServiceWorker()
