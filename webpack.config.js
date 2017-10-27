@@ -13,12 +13,20 @@ module.exports = {
             test: /\.js$/,
             loader: 'babel',
             query: {
-                presets: ['es2015', 'react']
-            }
+                presets: ['es2015', 'react', 'stage-0']
+            },
+            plugins: ['lodash']
         }, {
             test: /\.scss$/,
             loader: 'style!css!sass',
-        }]
+        },{
+            test: /\.jsx$/,
+            include: [
+                path.resolve(__dirname, "app/src"),
+                path.resolve(__dirname, "app/test")
+            ],      
+            loader: "babel-loader"
+          }]
     },
     // plugins: [
     //     new webpack.optimize.UglifyJsPlugin({

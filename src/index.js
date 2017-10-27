@@ -8,6 +8,7 @@ import './index.css';
 // import { DatePicker } from 'antd'
 // import FirstComponent from './components/firstComponent'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import request from './utils/request'
 
 const BasicExample = () => (
 	<Router>
@@ -256,6 +257,20 @@ class LoginControl extends React.Component {
 	}
 
 	handleLoginClick() {
+		request({
+			url: '/yw/login',
+			method: 'post',
+			data: {
+				loginname: 'admin',
+				loginpwd: 'pass'
+			},
+		  })
+		  .then((response) => {
+			  console.log(response);
+		  })
+		  .catch((error) => {
+			  console.log(error);
+		  })
 		this.setState({
 			isLogedIn: true
 		});
