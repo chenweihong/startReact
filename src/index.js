@@ -6,7 +6,7 @@ import './index.css';
 // import SlideDemo from './view/home';
 // import registerServiceWorker from './registerServiceWorker'
 // import { DatePicker } from 'antd'
-// import FirstComponent from './components/firstComponent'
+import FirstComponent from './components/firstComponent'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import request from './utils/request'
 
@@ -24,6 +24,7 @@ const BasicExample = () => (
 			<Route exact path="/" component={Home}/>
 			<Route exact path="/about" component={About}/>
 			<Route exact path="/topics" component={Topics}/>
+			<Route exact path="/firstcomponent" component={FirstComponent}/>
 		</div>
 	</Router>
 );
