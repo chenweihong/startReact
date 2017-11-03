@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { createStore } from 'redux';
-
+// 应用中所有的 state 都以一个对象树的形式储存在一个单一的 store 中。
+// 惟一改变 state 的办法是触发 action，一个描述发生什么的对象。
+// 为了描述 action 如何改变 state 树，你需要编写 reducers。
 function counter(state = 0, action) {
 	switch (action.type) {
 	case 'INCREMENT':
@@ -28,7 +30,6 @@ store.dispatch({ type: 'INCREMENT' });
 // 2
 store.dispatch({ type: 'DECREMENT' });
 // 1
-// console.log('firstcomponent' + store.getState())
 
 // 你应该把要做的修改变成一个普通对象，这个对象被叫做 action，
 // 而不是直接修改 state。然后编写专门的函数来决定每个 action 如何改变应用的 state，

@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-// import { render } from 'react-dom';
+import { render } from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import todoApp from './store/reducers';
 import './index.css';
-// import App from './App';
+import App from './App';
 // import SlideDemo from './view/home';
 // import registerServiceWorker from './registerServiceWorker'
 // import { DatePicker } from 'antd'
 import FirstComponent from './components/firstComponent'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import request from './utils/request'
+// import { store } from './store/index'
 
 const BasicExample = () => (
 	<Router>
@@ -310,7 +314,13 @@ ReactDOM.render(
 	document.getElementById('root')
 );
 
-// ReactDOM.render(<App />, document.getElementById('root'));
+let store = createStore(todoApp);
+ReactDOM.render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	document.getElementById('root')
+);
 // ReactDOM.render(<SlideDemo />, document.getElementById('root'));
 // ReactDOM.render(<Atest />, document.getElementById('root'));
 // ReactDOM.render(<DatePicker />, document.getElementById('antd_1'));
