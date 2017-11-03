@@ -1,36 +1,35 @@
 import React, { Component } from 'react'
+import PropTypes from 'react-dom'
 import logo from './logo.svg'
 import './App.css'
 import AddTodo from './components/AddTodo'
 import TodoList from './components/TodoList'
 import Footer from './components/Footer'
+import { connect } from 'react-redux'
+import { addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from './store/actions';
 
  
 class App extends Component {
 	render() {
+		// 通过调用 connect() 注入
+		const { dispatch, visibleTodos, visibilityFilter } = this.props
 		return (
 			<div className="App">
-				<AddTodo onAddClick={text => 
-					console.log('addtodo', text)}
-				/>
-				<TodoList todos={[
-					{
-						text: 'use redux',
-						completed: true
-					},
-					{
-						text: 'learn to contact to react',
-						completed: false
+				<AddTodo 
+					onAddClick={text => 
+						dispatch(AddTodo(text))
 					}
-				]}
-				onTodoClick={todo =>
-					console.log('todo clicked', todo)
-				}
+				/>
+				<TodoList 
+					todos={this.props.visibleTodos}
+					onTodoClick={index =>
+						dispatch(completeTodo(index))
+					}
 				/>
 				<Footer
 					filter='SHOW_ALL'
-					onFilterChange={filter =>
-						console.log('filter change', filter)
+					onFilterChange={nextFilter =>
+						dispatch(setVisibilityFilter(nextFilter))
 					}
 				/>
 			</div>
@@ -38,4 +37,37 @@ class App extends Component {
 	}
 }
 
-export default App
+App.propTypes = {
+	visibleTodos: PropTypes.arrayOf(PropTypes.shape({
+		text: PropTypes.string.isRequired,
+		completed: PropTypes.bool.isRequired
+	})),
+	visibilityFilter: PropTypes.oneOf([
+		'SHOW_ALL',
+		'SHOW_COMPLETED',
+		'SHOW_ACTIVE'
+	]).isRequired
+}
+
+function selectTodos(todos, filter) {
+	switch (filter) {
+	case VisibilityFilters.SHOW_ALL:
+		return todos;
+	case VisibilityFilters.SHOW_COMPLETED:
+		return todos.filter(todo => todo.completed);
+	case VisibilityFilters.SHOW_ACTIVE:
+		return todos.filter(todo => !todo.completed);
+	}
+}
+
+// 基于全局 state ，哪些是我们想注入的 props ?
+// 注意：使用 https://github.com/reactjs/reselect 效果更佳。
+function select(state) {
+	return {
+		visibleTodos: selectTodos(state.todos, state.visibilityFilter),
+		visibilityFilter: state.visibilityFilter
+	};
+}
+
+// 包装 component ，注入 dispatch 和 state 到其默认的 connect(select)(App) 中；
+export default connect(select)(App);
