@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from 'react-dom'
+import PropTypes from 'prop-types'
 import logo from './logo.svg'
 import './App.css'
 import AddTodo from './components/AddTodo'
@@ -17,7 +17,7 @@ class App extends Component {
 			<div className="App">
 				<AddTodo 
 					onAddClick={text => 
-						dispatch(AddTodo(text))
+						dispatch(addTodo(text))
 					}
 				/>
 				<TodoList 
@@ -39,24 +39,24 @@ class App extends Component {
 
 App.propTypes = {
 	visibleTodos: PropTypes.arrayOf(PropTypes.shape({
-		text: PropTypes.string.isRequired,
-		completed: PropTypes.bool.isRequired
-	})),
+	  text: PropTypes.string.isRequired,
+	  completed: PropTypes.bool.isRequired
+	}).isRequired).isRequired,
 	visibilityFilter: PropTypes.oneOf([
-		'SHOW_ALL',
-		'SHOW_COMPLETED',
-		'SHOW_ACTIVE'
+	  'SHOW_ALL',
+	  'SHOW_COMPLETED',
+	  'SHOW_ACTIVE'
 	]).isRequired
-}
+  }
 
 function selectTodos(todos, filter) {
 	switch (filter) {
-	case VisibilityFilters.SHOW_ALL:
-		return todos;
-	case VisibilityFilters.SHOW_COMPLETED:
-		return todos.filter(todo => todo.completed);
-	case VisibilityFilters.SHOW_ACTIVE:
-		return todos.filter(todo => !todo.completed);
+		case VisibilityFilters.SHOW_ALL:
+			return todos;
+		case VisibilityFilters.SHOW_COMPLETED:
+			return todos.filter(todo => todo.completed);
+		case VisibilityFilters.SHOW_ACTIVE:
+			return todos.filter(todo => !todo.completed);
 	}
 }
 
